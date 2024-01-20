@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=5">
+    <title>Ruby Next Playground</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+  </head>
+  <body>
+    <main>
+      <nav>
+      </nav>
+      <textarea id="editor" style="height:300px;width:600px;">
+greet = proc do
+  case it
+    in hello: hello if hello =~ /human/i
+      '🙂'
+    in hello: 'martian'
+      '👽'
+    end
+  end
+
+puts greet.call(hello: 'martian')
+      </textarea>
+
+      <textarea id="output" disabled readonly style="height:300px;width:600px;"></textarea>
+      <button id="btn">Transpile</button>
+    </main>
+    <script type="module" src="index.js" disabled></script>
+  </body>
+</html>
