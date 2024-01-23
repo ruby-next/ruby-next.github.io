@@ -25,8 +25,11 @@ jobs:
       with:
         ruby-version: 3.2
         bundler-cache: true
+    - name: Setup yarn
+      run: npm install -g yarn
     - uses: actions/setup-node@v4
       with:
+        node-version: 21
         cache: yarn
     - name: Install wasi-vfs
       if: steps.cache-wasi-vfs.outputs.cache-hit != 'true'
@@ -57,4 +60,5 @@ jobs:
         bundle exec rbwasm build -o src/ruby.wasm --ruby-version 3.2
     - name: Build web app
       run: |
+        yarn install
         yarn build
