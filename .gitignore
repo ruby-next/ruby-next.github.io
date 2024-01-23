@@ -7,9 +7,6 @@
 tmp/
 dist/
 
-gemfiles/*.lock
-Gemfile.lock
-
 mspec/
 .rbnext/
 rubyspec_temp/
