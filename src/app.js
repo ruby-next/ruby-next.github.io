@@ -1,3 +1,5 @@
+import Store from "./store.js";
+
 const DEFAULT_SOURCE = `# Welcome to Ruby Next playground!
 # Here you can write Ruby code and see how it will be transformed by Ruby Next.
 # You can also execute it and see the result.
@@ -41,6 +43,9 @@ export default class App {
 
     this.onSelectEditor = this.onSelectEditor.bind(this);
     this.invalidatePreview = this.invalidatePreview.bind(this);
+    this.openSavedExamples = this.openSavedExamples.bind(this);
+
+    this.store = new Store();
   }
 
   bootstrap() {
@@ -102,11 +107,61 @@ export default class App {
 
     this.versionSelect = document.getElementById("versionSelect");
 
-    if (theme === "dark") this.versionSelect.classList.add("sl-theme-dark");
-
     this.versionSelect.addEventListener("sl-change", this.invalidatePreview);
 
+    const saveDialog = document.getElementById("saveDialog");
+
+    if (saveDialog) {
+      this.el
+        .querySelector('[target="save-btn"]')
+        .addEventListener("click", () => saveDialog.show());
+
+      saveDialog.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const input = e.target.querySelector('[name="name"]');
+        const name = input.value;
+        const code = this.codeEditor.getValue();
+        const config = this.configEditor.getValue();
+
+        this.store.save(name, { code, config });
+
+        input.value = "";
+        saveDialog.hide();
+      });
+    }
+
+    const openDialog = document.getElementById("openDialog");
+
+    if (openDialog) {
+      this.el
+        .querySelector('[target="open-btn"]')
+        .addEventListener("click", this.openSavedExamples);
+
+      openDialog.addEventListener("click", (e) => {
+        if (e.target.tagName !== "A") return;
+
+        e.preventDefault();
+
+        const key = e.target.dataset.key;
+
+        const example = this.store.fetch(key);
+
+        if (example) {
+          const { code, config } = example;
+
+          this.codeEditor.setValue(code);
+          this.configEditor.setValue(config);
+        }
+
+        openDialog.hide();
+      });
+    }
+
     this.setCurrentVMVersion();
+
+    if (theme === "dark")
+      document.documentElement.classList.add("sl-theme-dark");
   }
 
   transpile(code, opts = {}) {
@@ -200,5 +255,28 @@ export default class App {
     if (!e.target.value) return;
 
     this.showEditor(e.target.value);
+  }
+
+  openSavedExamples() {
+    const dialog = document.getElementById("openDialog");
+
+    if (!dialog) return;
+
+    const examples = this.store.all();
+
+    const content = dialog.querySelector('[target="list"]');
+
+    if (!examples.length) {
+      content.innerHTML = `<p>No saved examples yet</p>`;
+    } else {
+      content.innerHTML = examples
+        .map(
+          (key) =>
+            `<a class="text-blue-600 dark:text-blue-200 hover:text-blue-500 dark:text-blue-100 cursor-pointer py-2 inline-block" href="#" data-key="${key}">${key}</a>`
+        )
+        .join("");
+    }
+
+    dialog.show();
   }
 }

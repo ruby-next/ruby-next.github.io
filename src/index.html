@@ -86,22 +86,38 @@
         </nav>
         <div class="flex flex-row flex-grow relative">
           <div id="editor_left_pane" class="flex flex-col w-1/2 relative">
-            <div class="flex flex-row flex-grow text-sm bg-editor-light dark:bg-editor-dark">
-              <label for="editor_left_pane_config" class="mb-1 p-1 flex flex-row items-center cursor-pointer border-b border-editor-light dark:border-editor-dark has-[:checked]:border-editor-dark dark:has-[:checked]:border-editor-light opacity-75 has-[:checked]:opacity-100">
-                <input type="radio" id="editor_left_pane_config" name="editor_left_pane" value="configEditor" class="hidden peer">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 0 1 1.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.559.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.894.149c-.424.07-.764.383-.929.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 0 1-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.398.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 0 1-.12-1.45l.527-.737c.25-.35.272-.806.108-1.204-.165-.397-.506-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.108-1.204l-.526-.738a1.125 1.125 0 0 1 .12-1.45l.773-.773a1.125 1.125 0 0 1 1.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894Z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                </svg>
-                <span class="ml-1">Config</span>
-              </label>
-              <label for="editor_left_pane_code" class="mb-1 p-1 flex flex-row items-center cursor-pointer border-b border-editor-light dark:border-editor-dark has-[:checked]:border-editor-dark dark:has-[:checked]:border-editor-light opacity-75 has-[:checked]:opacity-100">
-                <input type="radio" id="editor_left_pane_code" name="editor_left_pane" value="codeEditor" class="hidden peer" checked>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z" />
-                </svg>
-                <span class="ml-1">Code</span>
-              </label>
+            <div class="flex flex-row justify-between flex-grow text-sm bg-editor-light dark:bg-editor-dark">
+              <div class="flex flex-row">
+                <label for="editor_left_pane_config" class="mb-1 p-1 flex flex-row items-center cursor-pointer border-b border-editor-light dark:border-editor-dark has-[:checked]:border-editor-dark dark:has-[:checked]:border-editor-light opacity-75 has-[:checked]:opacity-100">
+                  <input type="radio" id="editor_left_pane_config" name="editor_left_pane" value="configEditor" class="hidden peer">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 0 1 1.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.559.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.894.149c-.424.07-.764.383-.929.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 0 1-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.398.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 0 1-.12-1.45l.527-.737c.25-.35.272-.806.108-1.204-.165-.397-.506-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.108-1.204l-.526-.738a1.125 1.125 0 0 1 .12-1.45l.773-.773a1.125 1.125 0 0 1 1.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  </svg>
+                  <span class="ml-1">Config</span>
+                </label>
+                <label for="editor_left_pane_code" class="mb-1 p-1 flex flex-row items-center cursor-pointer border-b border-editor-light dark:border-editor-dark has-[:checked]:border-editor-dark dark:has-[:checked]:border-editor-light opacity-75 has-[:checked]:opacity-100">
+                  <input type="radio" id="editor_left_pane_code" name="editor_left_pane" value="codeEditor" class="hidden peer" checked>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z" />
+                  </svg>
+                  <span class="ml-1">Code</span>
+                </label>
+              </div>
+              <div class="flex flex-row mr-4 space-x-2">
+                <span target="open-btn" class="mb-1 p-1 flex flex-row items-center cursor-pointer border dark:border-editor-light border-editor-dark">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
+                  </svg>
+                  <span class="ml-1">Open</span>
+                </span>
+                <span target="save-btn" class="mb-1 p-1 flex flex-row items-center cursor-pointer border dark:border-editor-light border-editor-dark">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+                  </svg>
+                  <span class="ml-1">Save</span>
+                </span>
+              </div>
             </div>
             <div id="configEditor" data-pane="editor_left_pane" class="w-full h-full hidden"></div>
             <div id="codeEditor" data-pane="editor_left_pane" class="w-full h-full"></div>
@@ -128,6 +144,18 @@
             <div id="outputEditor" data-pane="editor_right_pane" class="w-full h-full hidden"></div>
           </div>
         </div>
+        <sl-dialog id="saveDialog" label="Save example" class="dialog-overview">
+          You can save your example locally in your browser. It will be available only on this device.
+          <form class="mt-2 flex flex-col space-y-2">
+            <sl-input name="name" placeholder="Example name" required></sl-input>
+            <sl-button type="submit" submit>Save</sl-button>
+          </form>
+        </sl-dialog>
+        <sl-dialog id="openDialog" label="Open example" class="dialog-overview">
+          <div target="list" class="flex flex-col space-y-2">
+            <a class="text-blue-600 dark:text-blue-200 hover:text-blue-500 dark:text-blue-100 cursor-pointer" href="#" data-key="${key}">${key}</a>
+          </div>
+        </sl-dialog>
       </div>
     </main>
     <script type="module" src="index.js" disabled></script>
