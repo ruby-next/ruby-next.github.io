@@ -40,10 +40,25 @@ export default async function initVM() {
     require "ruby-next/language/rewriters/edge"
     require "ruby-next/language/rewriters/proposed"
 
+
     module RubyNext
+      class << self
+        attr_accessor :custom_rewriters
+      end
+
+      self.custom_rewriters = []
+
+      def self.define_text_rewriter(name, &block)
+        Class.new(RubyNext::Language::Rewriters::Text, &block).tap do |rw|
+          rw.const_set(:NAME, name)
+          rw.const_set(:MIN_SUPPORTED_VERSION, Gem::Version.new(RubyNext::NEXT_VERSION))
+          custom_rewriters << rw
+        end
+      end
+
       def self.transform(code, version: RUBY_VERSION, using: false)
         options = {using:}
-        options[:rewriters] = Language.rewriters.select { |rw| rw.unsupported_version?(version) }
+        options[:rewriters] = Language.rewriters.select { |rw| rw.unsupported_version?(version) } + custom_rewriters
 
         source = Language.transform(code, **options)
         source += "\n # Transformed with RubyNext v#{RubyNext::VERSION} for Ruby #{version}"

@@ -16,7 +16,15 @@ puts greet.call(hello: 'martian')
 
 const DEFAULT_PREVIEW = `# Here you will see the transpiled source code.`;
 
-const CONFIG = `# Here you can define custom source rewriters.`;
+const CONFIG = `# Here you can define custom source rewriters.
+# For example, you can add ":=" operator (if you miss C) as follows:
+#
+# RubyNext.define_text_rewriter "operator_assign" do
+#   def safe_rewrite(source)
+#     source.gsub(":=", "=")
+#   end
+# end
+`;
 
 const OUTPUT = "// Here will be the output of your program";
 
@@ -32,6 +40,7 @@ export default class App {
     this.monaco = monaco;
 
     this.onSelectEditor = this.onSelectEditor.bind(this);
+    this.invalidatePreview = this.invalidatePreview.bind(this);
   }
 
   bootstrap() {
@@ -71,12 +80,7 @@ export default class App {
 
     this.el
       .querySelector('[target="transpile-btn"]')
-      .addEventListener("click", () => {
-        const result = this.transpile(this.codeEditor.getValue());
-
-        this.previewEditor.setValue(result);
-        this.showEditor("previewEditor");
-      });
+      .addEventListener("click", this.invalidatePreview);
 
     this.el
       .querySelector('[target="run-btn"]')
@@ -96,15 +100,39 @@ export default class App {
 
     this.el.addEventListener("change", this.onSelectEditor);
 
-    this.setCurrentVersion();
+    this.versionSelect = document.getElementById("versionSelect");
+
+    if (theme === "dark") this.versionSelect.classList.add("sl-theme-dark");
+
+    this.versionSelect.addEventListener("sl-change", this.invalidatePreview);
+
+    this.setCurrentVMVersion();
   }
 
-  transpile(code) {
-    const result = this.vm
-      .eval("RubyNext.transform(%q(" + code + "))")
-      .toString();
+  transpile(code, opts = {}) {
+    let rubyOptions = "{";
 
-    return result;
+    if (opts.version) {
+      rubyOptions += `version: "${opts.version}"`;
+    }
+
+    rubyOptions += "}";
+
+    try {
+      // eval configuration
+      // first, reset custom rewriters
+      this.vm.eval("RubyNext.custom_rewriters.clear");
+      this.vm.eval(this.configEditor.getValue());
+
+      const result = this.vm
+        .eval("RubyNext.transform(%q(" + code + "), **" + rubyOptions + ")")
+        .toString();
+
+      return result;
+    } catch (e) {
+      console.error(e);
+      return e.message;
+    }
   }
 
   execute(source) {
@@ -116,7 +144,7 @@ export default class App {
     }
   }
 
-  async setCurrentVersion() {
+  async setCurrentVMVersion() {
     const versionContainer = document.getElementById("currentVersion");
     if (!versionContainer) return;
 
@@ -135,6 +163,14 @@ export default class App {
       },
       ...opts,
     });
+  }
+
+  invalidatePreview() {
+    const version = this.versionSelect.value;
+    const newSource = this.transpile(this.codeEditor.getValue(), { version });
+    this.previewEditor.setValue(newSource);
+
+    this.showEditor("previewEditor");
   }
 
   showEditor(editorName) {
