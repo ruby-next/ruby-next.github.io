@@ -1,3 +1,5 @@
+import "./shoelace.js";
+
 import App from "./app.js";
 
 const loaderDone = (name) => {
