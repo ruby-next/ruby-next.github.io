@@ -105,6 +105,12 @@
                 </label>
               </div>
               <div class="flex flex-row mr-4 space-x-2">
+                <span target="import-btn" class="mb-1 p-1 flex flex-row items-center cursor-pointer border dark:border-editor-light border-editor-dark">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                  </svg>
+                  <span class="ml-1">Import</span>
+                </span>
                 <span target="open-btn" class="mb-1 p-1 flex flex-row items-center cursor-pointer border dark:border-editor-light border-editor-dark">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
@@ -153,7 +159,30 @@
         </sl-dialog>
         <sl-dialog id="openDialog" label="Open example" class="dialog-overview">
           <div target="list" class="flex flex-col space-y-2">
-            <a class="text-blue-600 dark:text-blue-200 hover:text-blue-500 dark:text-blue-100 cursor-pointer" href="#" data-key="${key}">${key}</a>
+            <a class="text-blue-600 dark:text-blue-200 hover:text-blue-500 dark:hover:text-blue-100 cursor-pointer" href="#" data-key="${key}">${key}</a>
+          </div>
+        </sl-dialog>
+        <sl-dialog id="importDialog" label="Open example" class="dialog-overview">
+          <p>You can import examples from Gist by pasting a link below.</p>
+
+          <p class="text-sm my-2">
+            <strong>NOTE:</strong>The Gist must contain <code>config.rb</code> and <code>example.rb</code> Ruby files.
+          </p>
+
+          <form class="mt-2 flex flex-col space-y-2">
+            <sl-input name="gistId" placeholder="Gist link" required></sl-input>
+            <sl-button type="submit" submit>Import</sl-button>
+          </form>
+
+          <div class="mt-4">
+            You can also checkout these examples:
+
+            <ul class="flex flex-col space-y-2 list-disc list-inside">
+              <li>
+                <a class="text-blue-600 dark:text-blue-200 hover:text-blue-500 dark:hover:text-blue-100 cursor-pointer" href="#" data-url="https://gist.github.com/palkan/bf3a796268a9730a095fb26cf7f51410">Endless memoized methods</a>
+                (<a class="text-blue-600 dark:text-blue-200 hover:text-blue-500 dark:hover:text-blue-100 cursor-pointer" href="https://gist.github.com/palkan/bf3a796268a9730a095fb26cf7f51410" target="_blank">gist</a>)
+              </li>
+            </ul>
           </div>
         </sl-dialog>
       </div>

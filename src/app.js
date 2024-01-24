@@ -1,4 +1,5 @@
 import Store from "./store.js";
+import importFromGist from "./gist.js";
 
 const DEFAULT_SOURCE = `# Welcome to Ruby Next playground!
 # Here you can write Ruby code and see how it will be transformed by Ruby Next.
@@ -158,10 +159,43 @@ export default class App {
       });
     }
 
+    const importDialog = document.getElementById("importDialog");
+
+    if (importDialog) {
+      this.el
+        .querySelector('[target="import-btn"]')
+        .addEventListener("click", () => importDialog.show());
+
+      importDialog.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const input = e.target.querySelector('[name="gistId"]');
+        const url = input.value;
+
+        importDialog.hide();
+
+        this.importGist(url);
+      });
+
+      importDialog.addEventListener("click", (e) => {
+        if (e.target.tagName !== "A" || !e.target.dataset.url) return;
+
+        e.preventDefault();
+
+        const url = e.target.dataset.url;
+
+        importDialog.hide();
+
+        this.importGist(url);
+      });
+    }
+
     this.setCurrentVMVersion();
 
     if (theme === "dark")
       document.documentElement.classList.add("sl-theme-dark");
+
+    this.loadExampleFromUrl();
   }
 
   transpile(code, opts = {}) {
@@ -272,11 +306,35 @@ export default class App {
       content.innerHTML = examples
         .map(
           (key) =>
-            `<a class="text-blue-600 dark:text-blue-200 hover:text-blue-500 dark:text-blue-100 cursor-pointer py-2 inline-block" href="#" data-key="${key}">${key}</a>`
+            `<a class="text-blue-600 dark:text-blue-200 hover:text-blue-500 dark:hover:text-blue-100 cursor-pointer py-2 inline-block" href="#" data-key="${key}">${key}</a>`
         )
         .join("");
     }
 
     dialog.show();
+  }
+
+  async importGist(url) {
+    try {
+      const { id, code, config } = await importFromGist(url);
+
+      this.codeEditor.setValue(code);
+      this.configEditor.setValue(config);
+
+      // Set URL fragment to include gist ID
+      window.location.hash = `gist:${id}`;
+    } catch (e) {
+      alert(e.message);
+    }
+  }
+
+  async loadExampleFromUrl() {
+    if (!window.location.hash) return;
+
+    const [type, id] = window.location.hash.slice(1).split(":");
+
+    if (type !== "gist") return;
+
+    await this.importGist(`https://gist.github.com/${id}`);
   }
 }
