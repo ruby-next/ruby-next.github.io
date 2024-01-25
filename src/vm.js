@@ -1,5 +1,4 @@
 import { DefaultRubyVM } from "@ruby/wasm-wasi/dist/browser";
-import { consolePrinter } from "@ruby/wasm-wasi";
 import ruby from "./ruby.wasm";
 
 export default async function initVM() {
