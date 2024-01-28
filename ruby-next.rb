@@ -1,8 +1,5 @@
 require "/bundle/setup"
 
-# Make gem no-op
-define_singleton_method(:gem) { |*| nil }
-
 require "ruby-next/language"
 
 SOURCE = <<~'RUBY'

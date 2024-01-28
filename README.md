@@ -6,13 +6,6 @@ Play with Ruby Next right in the browser (powered by [ruby.wasm](https://github.
 
 ### Prerequisites
 
-- Install [wasi-vfs](https://github.com/kateinoigakukun/wasi-vfs):
-
-  ```sh
-  brew tap kateinoigakukun/wasi-vfs https://github.com/kateinoigakukun/wasi-vfs.git
-  brew install kateinoigakukun/wasi-vfs/wasi-vfs
-  ```
-
 - Install Rust toolchain:
 
   ```sh

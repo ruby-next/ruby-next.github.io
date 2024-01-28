@@ -18,8 +18,6 @@ export default async function initVM() {
   vm.eval(`
     require "/bundle/setup"
     require "rubygems"
-    # Make gem no-op
-    define_singleton_method(:gem) { |*| nil }
 
     require "js"
 
