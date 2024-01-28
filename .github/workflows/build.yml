@@ -32,14 +32,14 @@ jobs:
         path: |
           build
           rubies
-        key: ${{ runner.os }}-ruby-wasm
+        key: ${{ runner.os }}-v2-ruby-wasm
     - name: Cache compiled ruby.wasm module
       id: cache-ruby-wasm-module
       uses: actions/cache@v4
       with:
         path: |
           src/ruby.wasm
-        key: ${{ runner.os }}-${{ hashFiles('**/Gemfile.lock') }}-ruby-wasm-module
+        key: ${{ runner.os }}-v2-${{ hashFiles('**/Gemfile.lock') }}-ruby-wasm-module
     - name: Build ruby.wasm
       if: steps.cache-ruby-wasm-module.outputs.cache-hit != 'true'
       run: |
