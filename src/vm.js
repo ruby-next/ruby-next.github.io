@@ -1,19 +1,44 @@
-import { DefaultRubyVM } from "@ruby/wasm-wasi/dist/browser";
+import { RubyVM } from "@ruby/wasm-wasi";
+import { File, WASI, OpenFile, ConsoleStdout } from "@bjorn3/browser_wasi_shim";
+
 import ruby from "./ruby.wasm";
 
 export default async function initVM() {
   const module = await ruby();
 
   const output = [];
-  const originalLog = console.log;
-  window.$puts = function (val) {
-    originalLog(val);
+  output.flush = function () {
+    return this.splice(0, this.length).join("\n");
+  };
+
+  const setStdout = function (val) {
+    console.log(val);
     output.push(val);
   };
 
-  const { vm } = await DefaultRubyVM(module);
+  const setStderr = function (val) {
+    console.warn(val);
+    output.push(`[warn] ${val}`);
+  };
 
-  window.$puts.flush = () => output.splice(0, output.length).join("\n");
+  const fds = [
+    new OpenFile(new File([])),
+    ConsoleStdout.lineBuffered(setStdout),
+    ConsoleStdout.lineBuffered(setStderr),
+  ];
+  const wasi = new WASI([], [], fds, { debug: false });
+  const vm = new RubyVM();
+  const imports = {
+    wasi_snapshot_preview1: wasi.wasiImport,
+  };
+  vm.addToImports(imports);
+
+  const instance = await WebAssembly.instantiate(module, imports);
+  await vm.setInstance(instance);
+
+  wasi.initialize(instance);
+  vm.initialize();
+  vm.$output = output;
 
   vm.eval(`
     require "/bundle/setup"
@@ -21,22 +46,9 @@ export default async function initVM() {
 
     require "js"
 
-    module Kernel
-      def puts(val)
-        JS.eval("window.$puts('#{val.inspect}')")
-        nil
-      end
-
-      def p(val)
-        JS.eval("window.$puts('#{val}')")
-        nil
-      end
-    end
-
     require "ruby-next/language"
     require "ruby-next/language/rewriters/edge"
     require "ruby-next/language/rewriters/proposed"
-
 
     module RubyNext
       class << self

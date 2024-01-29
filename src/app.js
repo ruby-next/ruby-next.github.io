@@ -94,8 +94,7 @@ export default class App {
         const newSource = this.transpile(this.codeEditor.getValue());
         this.previewEditor.setValue(newSource);
 
-        const result = this.execute(newSource);
-        let output = window.$puts.flush();
+        let { result, output } = this.executeWithOutput(newSource);
 
         if (result) output += "\n\n> " + result;
 
@@ -233,6 +232,13 @@ export default class App {
     }
   }
 
+  executeWithOutput(source) {
+    this.vm.$output.flush();
+    const result = this.execute(source);
+    const output = this.vm.$output.flush();
+    return { result, output };
+  }
+
   async setCurrentVMVersion() {
     const versionContainer = document.getElementById("currentVersion");
     if (!versionContainer) return;
@@ -286,7 +292,7 @@ export default class App {
   }
 
   onSelectEditor(e) {
-    if (!e.target.value) return;
+    if (!e.target.value || !e.target.value.match(/Editor$/)) return;
 
     this.showEditor(e.target.value);
   }
