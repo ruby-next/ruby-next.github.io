@@ -20,13 +20,11 @@ Play with Ruby Next right in the browser (powered by [ruby.wasm](https://github.
 
 ### Building ruby.wasm
 
-The following command works for me:
+Use the following command:
 
 ```sh
-LDFLAGS='-L/opt/homebrew/opt/ruby/lib' bundle exec rbwasm build -o src/ruby.wasm --ruby-version 3.2
+bundle exec rbwasm build -o src/ruby.wasm --ruby-version 3.2
 ```
-
-Looks like compiling Ruby relies on the hardcoded `/usr/local/opt/ruby/lib` path for linking. So, we need to provie the correct way to Ruby (and, I guess, the versions must match).
 
 This would build a JS-compatible WASM module. To build JS-free WASM module, use the `JS=false` env var.
 
@@ -45,7 +43,7 @@ First, install JS deps (`yarn install`).
 Then, run a web server:
 
 ```sh
-yarn serve
+yarn dev
 ```
 
 Go to [localhost:8000](http://localhost:8000) and see it in action!
