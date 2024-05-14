@@ -69,8 +69,10 @@ export default async function initVM() {
         options = {using:}
         options[:rewriters] = Language.rewriters.select { |rw| rw.unsupported_version?(version) } + custom_rewriters
 
+        start = Time.now
         source = Language.transform(code, **options)
-        source += "\n # Transformed with RubyNext v#{RubyNext::VERSION} for Ruby #{version}"
+        time = Time.now - start
+        source += "\n # Transformed with RubyNext v#{RubyNext::VERSION} for Ruby #{version} (took #{time}s)"
       end
     end
   `);
