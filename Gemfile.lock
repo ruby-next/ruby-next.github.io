@@ -5,18 +5,18 @@ GEM
     diff-lcs (1.5.1)
     js (2.5.0)
     paco (0.2.3)
-    parser (3.3.0.5)
+    parser (3.3.1.0)
       ast (~> 2.4.1)
       racc
     racc (1.7.3)
     require-hooks (0.2.2)
-    ruby-next (1.0.2)
+    ruby-next (1.0.3)
       paco (~> 0.2)
       require-hooks (~> 0.2)
-      ruby-next-core (= 1.0.2)
+      ruby-next-core (= 1.0.3)
       ruby-next-parser (>= 3.2.2.0)
       unparser (~> 0.6.0)
-    ruby-next-core (1.0.2)
+    ruby-next-core (1.0.3)
     ruby-next-parser (3.2.2.0)
       parser (>= 3.0.3.1)
     ruby_wasm (2.5.0)
@@ -35,7 +35,7 @@ PLATFORMS
 
 DEPENDENCIES
   js (~> 2.5)
-  ruby-next (~> 1.0)
+  ruby-next (~> 1.0.3)
   ruby_wasm (~> 2.5)
 
 BUNDLED WITH

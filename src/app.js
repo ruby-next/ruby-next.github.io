@@ -103,6 +103,22 @@ export default class App {
         this.showEditor("outputEditor");
       });
 
+    this.autorunCb = document.getElementById("autorun");
+    let refreshDebounceId;
+
+    this.codeEditor.onDidChangeModelContent((ev) => {
+      if (!this.autorunCb.checked) return;
+
+      if (refreshDebounceId) {
+        clearTimeout(refreshDebounceId);
+      }
+
+      refreshDebounceId = setTimeout(() => {
+        this.refresh();
+        refreshDebounceId = undefined;
+      }, 500);
+    });
+
     this.el.addEventListener("change", this.onSelectEditor);
 
     this.versionSelect = document.getElementById("versionSelect");
@@ -197,6 +213,23 @@ export default class App {
     this.loadExampleFromUrl();
   }
 
+  refresh() {
+    let newSource;
+    try {
+      newSource = this.transpile(this.codeEditor.getValue(), { raise: true });
+    } catch (e) {
+      return;
+    }
+
+    this.previewEditor.setValue(newSource);
+
+    let { result, output } = this.executeWithOutput(newSource);
+
+    if (result) output += "\n\n> " + result;
+
+    this.outputEditor.setValue(output);
+  }
+
   transpile(code, opts = {}) {
     let rubyOptions = "{";
 
@@ -218,6 +251,10 @@ export default class App {
 
       return result;
     } catch (e) {
+      if (opts.raise) {
+        throw e;
+      }
+
       console.error(e);
       return e.message;
     }
