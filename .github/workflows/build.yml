@@ -17,7 +17,7 @@ jobs:
         toolchain: 1.74.0
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.2
+        ruby-version: 3.3
         bundler-cache: true
     - name: Setup yarn
       run: npm install -g yarn
@@ -43,7 +43,7 @@ jobs:
     - name: Build ruby.wasm
       if: steps.cache-ruby-wasm-module.outputs.cache-hit != 'true'
       run: |
-        bundle exec rbwasm build -o src/ruby.wasm --ruby-version 3.2
+        bundle exec rbwasm build -o src/ruby.wasm --ruby-version 3.3
     - name: Build web app
       run: |
         yarn install

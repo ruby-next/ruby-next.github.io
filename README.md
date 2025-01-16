@@ -23,7 +23,7 @@ Play with Ruby Next right in the browser (powered by [ruby.wasm](https://github.
 Use the following command:
 
 ```sh
-bundle exec rbwasm build -o src/ruby.wasm --ruby-version 3.2
+bundle exec rbwasm build -o src/ruby.wasm --ruby-version 3.3
 ```
 
 This would build a JS-compatible WASM module. To build JS-free WASM module, use the `JS=false` env var.
