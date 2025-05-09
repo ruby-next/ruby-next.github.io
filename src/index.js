@@ -31,6 +31,7 @@ await Promise.all([
   import("./vm.js")
     .then(async ({ default: initVM }) => {
       const vm = await initVM();
+      window.$vm = vm;
       loaderDone("ruby");
       return vm;
     })

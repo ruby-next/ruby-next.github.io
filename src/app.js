@@ -246,7 +246,13 @@ export default class App {
       this.vm.eval(this.configEditor.getValue());
 
       const result = this.vm
-        .eval("RubyNext.transform(%q(" + code + "), **" + rubyOptions + ")")
+        .eval(`
+code = <<~'RUBY'
+${code}
+RUBY
+
+RubyNext.transform(code, **${rubyOptions})
+        `)
         .toString();
 
       return result;

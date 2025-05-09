@@ -10,8 +10,7 @@
     "dev": "npm-run-all --parallel watch:*"
   },
   "dependencies": {
-    "@bjorn3/browser_wasi_shim": "^0.2.19",
-    "@ruby/wasm-wasi": "^2.4.1",
+    "@ruby/wasm-wasi": "^2.7.1",
     "@shoelace-style/shoelace": "^2.13.0",
     "monaco-editor": "^0.45.0"
   },

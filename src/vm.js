@@ -1,5 +1,10 @@
 import { RubyVM } from "@ruby/wasm-wasi";
-import { File, WASI, OpenFile, ConsoleStdout } from "@bjorn3/browser_wasi_shim";
+import {
+  File,
+  WASI,
+  OpenFile,
+  ConsoleStdout,
+} from "@bjorn3/browser_wasi_shim";
 
 import ruby from "./ruby.wasm";
 
@@ -26,15 +31,10 @@ export default async function initVM() {
     ConsoleStdout.lineBuffered(setStdout),
     ConsoleStdout.lineBuffered(setStderr),
   ];
-  const wasi = new WASI([], [], fds, { debug: false });
-  const vm = new RubyVM();
-  const imports = {
-    wasi_snapshot_preview1: wasi.wasiImport,
-  };
-  vm.addToImports(imports);
-
-  const instance = await WebAssembly.instantiate(module, imports);
-  await vm.setInstance(instance);
+  const wasi = new WASI([], ["RUBYOPT=-EUTF-8 -W0", "NO_COLOR=1"], fds, { debug: false });
+  const { vm, instance } = await RubyVM.instantiateModule({
+    module, wasip1: wasi
+  });
 
   wasi.initialize(instance);
   vm.initialize();
