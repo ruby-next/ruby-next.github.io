@@ -1,5 +1,6 @@
 import Store from "./store.js";
 import importFromGist from "./gist.js";
+import initVM from "./vm.js";
 
 const DEFAULT_SOURCE = `# Welcome to Ruby Next playground!
 # Here you can write Ruby code and see how it will be transformed by Ruby Next.
@@ -90,11 +91,12 @@ export default class App {
 
     this.el
       .querySelector('[target="run-btn"]')
-      .addEventListener("click", () => {
-        const newSource = this.transpile(this.codeEditor.getValue());
-        this.previewEditor.setValue(newSource);
+      .addEventListener("click", async () => {
+        this.invalidatePreview(false);
 
-        let { result, output } = this.executeWithOutput(newSource);
+        const source = this.previewEditor.getValue();
+
+        let { result, output } = await this.executeWithOutput(source);
 
         if (result) output += "\n\n> " + result;
 
@@ -107,6 +109,8 @@ export default class App {
     let refreshDebounceId;
 
     this.codeEditor.onDidChangeModelContent((ev) => {
+      this._dirty = true;
+
       if (!this.autorunCb.checked) return;
 
       if (refreshDebounceId) {
@@ -213,7 +217,7 @@ export default class App {
     this.loadExampleFromUrl();
   }
 
-  refresh() {
+  async refresh() {
     let newSource;
     try {
       newSource = this.transpile(this.codeEditor.getValue(), { raise: true });
@@ -223,7 +227,7 @@ export default class App {
 
     this.previewEditor.setValue(newSource);
 
-    let { result, output } = this.executeWithOutput(newSource);
+    let { result, output } = await this.executeWithOutput(newSource);
 
     if (result) output += "\n\n> " + result;
 
@@ -266,27 +270,35 @@ RubyNext.transform(code, **${rubyOptions})
     }
   }
 
-  execute(source) {
+  async execute(source) {
     try {
-      return this.vm.eval(source).toString();
+      const vm = await initVM();
+      return vm.eval(source).toString();
     } catch (e) {
       console.error(e);
       return e.message;
     }
   }
 
-  executeWithOutput(source) {
-    this.vm.$output.flush();
-    const result = this.execute(source);
-    const output = this.vm.$output.flush();
-    return { result, output };
+  async executeWithOutput(source) {
+    try {
+      const vm = await initVM();
+      vm.$output.flush();
+      const result = vm.eval(source).toString();
+      const output = vm.$output.flush() || "";
+      console.log(result, output);
+      return { result, output };
+    } catch (e) {
+      console.error(e);
+      return { output: "💥 " + e.message };
+    }
   }
 
   async setCurrentVMVersion() {
     const versionContainer = document.getElementById("currentVersion");
     if (!versionContainer) return;
 
-    const version = this.execute("RUBY_VERSION + '-' + RUBY_PLATFORM");
+    const version = await this.execute("RUBY_VERSION + '-' + RUBY_PLATFORM");
 
     versionContainer.innerText = version;
   }
@@ -303,12 +315,16 @@ RubyNext.transform(code, **${rubyOptions})
     });
   }
 
-  invalidatePreview() {
+  invalidatePreview(showPreview = true) {
     const version = this.versionSelect.value;
-    const newSource = this.transpile(this.codeEditor.getValue(), { version });
-    this.previewEditor.setValue(newSource);
+    if (this._dirty || this._curVersion != version) {
+      const newSource = this.transpile(this.codeEditor.getValue(), { version });
+      this.previewEditor.setValue(newSource);
+    }
+    this._dirty = false;
+    this._curVersion = version;
 
-    this.showEditor("previewEditor");
+    if (showPreview) this.showEditor("previewEditor");
   }
 
   showEditor(editorName) {

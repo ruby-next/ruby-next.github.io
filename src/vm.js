@@ -8,8 +8,12 @@ import {
 
 import ruby from "./ruby.wasm";
 
+let rubyModule;
+
 export default async function initVM() {
-  const module = await ruby();
+  if (!rubyModule) rubyModule = await ruby();
+
+  const module = rubyModule;
 
   const output = [];
   output.flush = function () {
