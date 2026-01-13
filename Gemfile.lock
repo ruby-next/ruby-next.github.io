@@ -1,22 +1,22 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    ast (2.4.2)
-    diff-lcs (1.5.1)
+    ast (2.4.3)
+    diff-lcs (1.6.2)
     js (2.7.1)
     paco (0.2.3)
-    parser (3.3.7.0)
+    parser (3.3.10.0)
       ast (~> 2.4.1)
       racc
     racc (1.8.1)
-    require-hooks (0.2.2)
-    ruby-next (1.1.0)
+    require-hooks (0.2.3)
+    ruby-next (1.2.0)
       paco (~> 0.2)
       require-hooks (~> 0.2)
-      ruby-next-core (= 1.1.0)
+      ruby-next-core (= 1.2.0)
       ruby-next-parser (>= 3.4.0.2)
       unparser (~> 0.6.0)
-    ruby-next-core (1.1.0)
+    ruby-next-core (1.2.0)
     ruby-next-parser (3.4.0.2)
       parser (>= 3.0.3.1)
     ruby_wasm (2.7.1)
@@ -35,7 +35,7 @@ PLATFORMS
 
 DEPENDENCIES
   js (~> 2.7.1)
-  ruby-next (~> 1.1.0)
+  ruby-next (~> 1.2.0)
   ruby_wasm (~> 2.7.1)
 
 BUNDLED WITH
