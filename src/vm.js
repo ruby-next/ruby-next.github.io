@@ -48,6 +48,8 @@ export default async function initVM() {
     require "/bundle/setup"
     require "rubygems"
 
+    define_singleton_method(:gem) { |*| nil }
+
     require "js"
 
     require "ruby-next/language"

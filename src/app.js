@@ -7,15 +7,16 @@ const DEFAULT_SOURCE = `# Welcome to Ruby Next playground!
 # You can also execute it and see the result.
 
 greet = proc do
-case it
-  in hello: hello if hello =~ /human/i
-    '🙂'
-  in hello: 'martian'
-    '👽'
-  end
+  case it
+    in person: person if person =~ /human/i
+      '🙂'
+    in person: 'martian'
+      '👽'
+    end
 end
 
-puts greet.call(hello: 'martian')
+person = 'martian'
+puts greet.call(person:)
 `;
 
 const DEFAULT_PREVIEW = `# Here you will see the transpiled source code.`;

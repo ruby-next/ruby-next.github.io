@@ -32,18 +32,18 @@ jobs:
         path: |
           build
           rubies
-        key: ${{ runner.os }}-v2-ruby-wasm
+        key: ${{ runner.os }}-v3-ruby-wasm
     - name: Cache compiled ruby.wasm module
       id: cache-ruby-wasm-module
       uses: actions/cache@v4
       with:
         path: |
           src/ruby.wasm
-        key: ${{ runner.os }}-v2-${{ hashFiles('**/Gemfile.lock') }}-ruby-wasm-module
+        key: ${{ runner.os }}-v3-${{ hashFiles('**/Gemfile.lock') }}-ruby-wasm-module
     - name: Build ruby.wasm
       if: steps.cache-ruby-wasm-module.outputs.cache-hit != 'true'
       run: |
-        bin/rbwasm build -o src/ruby.wasm --ruby-version 3.4
+        bin/rbwasm build -o src/ruby.wasm --ruby-version 3.3
     - name: Build web app
       run: |
         yarn install
